@@ -1,3 +1,7 @@
+## Requirements
+* Docker
+* Makefile (optional)
+
 ## Installation
 
 Run the commands: `make build-setup`
