@@ -1,0 +1,62 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: .docker/app/Dockerfile
+    image: importer/api-laravel-dev
+    container_name: importer_app
+    tty: true
+    restart: unless-stopped
+    environment:
+      DB_HOST: db
+      XDEBUG_CONFIG: "client_host=host.docker.internal idekey=\"PHPSTORM\""
+      PHP_IDE_CONFIG: "serverName=docker-app"
+    volumes:
+      - ./:/var/www
+      - ./.docker/app/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./.docker/app/docker-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    networks:
+      - importer-network
+
+  webserver:
+    build:
+      context: .
+      dockerfile: .docker/nginx/Dockerfile
+    image: importer/api-nginx
+    container_name: importer_webserver
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www
+      - ./.docker/nginx/conf.d/:/etc/nginx/conf.d/
+    depends_on:
+      - app
+    networks:
+      - importer-network
+
+  db:
+    image: mysql:5.7
+    container_name: importer_db
+    command: ['mysqld','--character-set-server=utf8', '--collation-server=utf8_unicode_ci']
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - importer_dbdata:/var/lib/mysql
+    ports:
+      - "3300:3306"
+    networks:
+      - importer-network
+
+volumes:
+  importer_dbdata:
+    driver: local
+
+networks:
+  importer-network:
+    name: importer.network
+    driver: bridge
