@@ -52,9 +52,13 @@ Run the commands: `make build-setup`
 ```
 * * *
 
-## Notes
+## Tests
 
-Instead of using pure MVC, it uses the Service to keep the business logic centralized, atomic and scalable.
+Run the commands: `make test`
+
+* * *
+
+## Notes
 
 This demonstration has the following design patterns:
 * Dependency Injection;
