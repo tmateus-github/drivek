@@ -47,7 +47,7 @@ class UserService implements UserServiceInterface
         );
 
         $usersData  = [];
-        $row        = 1;
+        $row        = 0;
 
         if (($handle = fopen($file->getPathname(), 'r')) !== FALSE) {
             while (($data = fgetcsv($handle, config('csv.length.user_service'), ";")) !== FALSE) {

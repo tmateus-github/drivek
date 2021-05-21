@@ -38,3 +38,6 @@ build-setup:
 	make up
 	make composer-install
 	make migrate
+
+test:
+	docker exec -it importer_app php artisan test
