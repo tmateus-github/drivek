@@ -68,6 +68,13 @@ This demonstration has the following design patterns:
 * Dependency Injection;
 * Repository Pattern;
 
+Regarding the storage that might change. If needed, we can create/change to different driver.
+
+See below the steps:
+* In the config/filesystems, add the new driver. (ie: s3, represents a S3 bucket)
+* On UserService, in the storeFile method: change the disk name to the new one. 
+
+
 Included postman collection.
 
 * * *
